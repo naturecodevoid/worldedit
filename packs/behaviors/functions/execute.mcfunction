@@ -1,0 +1,1 @@
+summon worldedit:execute ~ ~ ~
