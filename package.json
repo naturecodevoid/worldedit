@@ -4,8 +4,9 @@
   "scripts": {
     "build": "gulp build",
     "watch": "gulp watch",
-    "installmod": "gulp install",
-    "uninstallmod": "gulp uninstall"
+    "installaddon": "gulp install",
+    "uninstalladdon": "gulp uninstall",
+    "packageaddon": "gulp package"
   },
   "devDependencies": {
     "minecraft-addon-toolchain": "^1.0.3",
