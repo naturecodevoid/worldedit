@@ -47,8 +47,6 @@ function displayChat(message) {
 function entitySelect(entity) {
     const position = serverSystem.getComponent(entity, "minecraft:position").data;
 
-    displayChat(`\nSelecting position:\nx:${position.x}\ny:${position.y}\nz:${position.z}`);
-
     select(position);
 
     serverSystem.destroyEntity(entity);
@@ -59,6 +57,7 @@ function axeSelect(position) {
 }
 
 function select(position) {
+    displayChat(`Selecting position [${position.x}, ${position.y}, ${position.z}]`);
     positionArray.push(position);
     if (positionArray.length >= 3) {
         displayChat("\nWarning:Positions exceeded.The first position is ignored.");
