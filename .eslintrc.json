@@ -1,0 +1,34 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "plugin:github/recommended",
+        "plugin:github/es6",
+        "plugin:github/node"
+    ],
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "rules": {
+        "no-console": "off",
+        "no-unused-vars": "off",
+        "no-console": "off",
+        "no-redeclare": "off",
+        "arrow-body-style": 0,
+        "curly": 0,
+        "lines-around-comment": 0,
+        "max-len": 0,
+        "no-confusing-arrow": 0,
+        "no-mixed-operators": 0,
+        "no-tabs": 0,
+        "no-unexpected-multiline": 0,
+        "prefer-arrow-callback": 0,
+        "quotes": 0,
+        "no-throw-literal": "off",
+        "no-undef": "off"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2017
+    }
+}
