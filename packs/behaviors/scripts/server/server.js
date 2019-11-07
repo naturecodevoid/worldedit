@@ -60,7 +60,7 @@ function select(position) {
     displayChat(`Selecting position [${position.x}, ${position.y}, ${position.z}]`);
     positionArray.push(position);
     if (positionArray.length >= 3) {
-        displayChat("\nWarning:Positions exceeded.The first position is ignored.");
+        displayChat("Warning: Positions exceeded.The first position is ignored.");
         positionArray.shift();
     }
 }
