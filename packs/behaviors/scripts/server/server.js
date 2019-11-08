@@ -25,9 +25,9 @@ serverSystem.initialize = function() {
         if (entity.__identifier__ === "worldedit:select") entitySelect(entity);
         else if (entity.__identifier__ === "worldedit:execute") entityExecute(entity);
     });
-    serverSystem.listenForEvent("minecraft:entity_carried_item_changed", (eventData) =>
-        distoryBlockHandler(eventData.data),
-    );
+    /*serverSystem.listenForEvent("minecraft:entity_carried_item_changed", (eventData) =>
+        distroyBlockHandler(eventData.data),
+    );*/
 };
 
 serverSystem.update = function() {
@@ -144,4 +144,4 @@ function generate(x, y, z) {
 
 // DISTROY BLOCK HANDLER
 
-function distoryBlockHandler(eventData) {}
+function distroyBlockHandler(eventData) {}
