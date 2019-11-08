@@ -26,7 +26,7 @@ serverSystem.initialize = function() {
         else if (entity.__identifier__ === "worldedit:execute") entityExecute(entity);
     });
     serverSystem.listenForEvent("minecraft:entity_carried_item_changed", (eventData) =>
-        handObjectHandler(eventData.data),
+        distoryBlockHandler(eventData.data),
     );
 };
 
@@ -142,6 +142,6 @@ function generate(x, y, z) {
     );
 }
 
-// HAND OBJECT HANDERLER
+// DISTROY BLOCK HANDLER
 
-function handObjectHandler(hand) {}
+function distoryBlockHandler(eventData) {}
