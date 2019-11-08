@@ -128,7 +128,7 @@ function execute() {
                 displayChat(x);
                 displayChat(y);
                 displayChat(z);*/
-                generate(x, y, z)
+                generate(x, y, z);
             }
         }
     }
