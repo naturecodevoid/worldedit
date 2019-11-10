@@ -2,23 +2,26 @@
     "name": "worldedit",
     "private": true,
     "scripts": {
-        "build": "gulp build",
-        "watch": "gulp watch",
-        "installaddon": "gulp install",
-        "uninstalladdon": "gulp uninstall",
-        "packageaddon": "gulp package",
-        "eslint": "eslint --config \"./.eslintrc.json\" --ignore-path \"./.eslintignore\" --fix \".\"",
-        "prettier": "prettier --config ./prettier.config.js --write \"**/**/*.js\" \"**/**/*.md\" \"**/**/*.json\" \"!**/**/package-lock.json\" \"!**/**/UIEngine.js\"",
-        "prettier-eslint": "npm run eslint && npm run prettier"
+        "build": "npx gulp build",
+        "watch": "npx gulp watch",
+        "installaddon": "npx gulp install",
+        "uninstalladdon": "npx gulp uninstall",
+        "packageaddon": "npx gulp package",
+        "eslint": "npx eslint --config \"./.eslintrc.json\" --ignore-path \"./.eslintignore\" --fix \".\"",
+        "eslint-no-fix": "npx eslint --config \"./.eslintrc.json\" --ignore-path \"./.eslintignore\" \".\"",
+        "prettier": "npx prettier --config \"./prettier.config.js\" --ignore-path \"./.eslintignore\" --write \"**/**/*.js\" \"**/**/*.md\" \"**/**/*.json\" \"!**/**/package-lock.json\" \"!**/**/UIEngine.js\"",
+        "prettier-eslint": "npm run eslint && npm run prettier",
+        "prettier-eslint-no-fix": "npm run eslint-no-fix && npm run prettier"
     },
     "devDependencies": {
         "eslint": "^6.6.0",
         "eslint-plugin-github": "^3.2.2",
         "eslint-plugin-prettier": "^3.1.1",
+        "gulp": "^4.0.2",
         "minecraft-addon-toolchain": "^1.0.3",
         "minecraft-addon-toolchain-browserify": "^1.0.3",
         "nature-prettier-config": "^1.0.4",
-        "prettier": "^1.18.2"
+        "prettier": "^1.19.1"
     },
     "dependencies": {}
 }

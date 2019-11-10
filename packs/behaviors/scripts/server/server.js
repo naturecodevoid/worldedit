@@ -1,7 +1,9 @@
-const serverSystem = server.registerSystem(0, 0);
+// eslint-disable-next-line
+let myServerSystem = server.registerSystem(0, 0);
 
-const positionArray = new Array(0);
 const globalVars = {};
+
+globalVars.positionArray = new Array(0);
 
 globalVars.fillingBlock = {};
 globalVars.fillingBlock.block = 0;
@@ -19,16 +21,17 @@ globalVars.tickingArea = 0;
 globalVars.time = 0;
 globalVars.enabled = true;
 
-serverSystem.initialize = function() {
-    /*serverSystem.listenForEvent("minecraft:player_placed_block", (eventData) => {
+myServerSystem.initialize = function initialize() {
+    //this.displayChat("hi");
+    /*myServerSystem.listenForEvent("minecraft:player_placed_block", (eventData) => {
         displayChat(JSON.stringify(eventData, null, "\t"));
 
-        globalVars.tickingArea = serverSystem.getComponent(eventData.data.player, "minecraft:tick_world").data.globalVars.tickingArea;
-        globalVars.fillingBlock.block = serverSystem.getBlock(globalVars.tickingArea, eventData.data.block_position);
+        globalVars.tickingArea = myServerSystem.getComponent(eventData.data.player, "minecraft:tick_world").data.globalVars.tickingArea;
+        globalVars.fillingBlock.block = myServerSystem.getBlock(globalVars.tickingArea, eventData.data.block_position);
 
         displayChat(JSON.stringify(globalVars.fillingBlock.block, null, "\t"));
 
-        globalVars.fillingBlock.blockState = serverSystem.getComponent(globalVars.fillingBlock.block, "minecraft:blockstate").data;
+        globalVars.fillingBlock.blockState = myServerSystem.getComponent(globalVars.fillingBlock.block, "minecraft:blockstate").data;
 
         displayChat(JSON.stringify(globalVars.fillingBlock.blockState, null, "\t"));
     });*/
@@ -52,11 +55,11 @@ serverSystem.initialize = function() {
     });
 };
 
-serverSystem.update = function() {
+myServerSystem.update = function() {
     globalVars.time++;
 };
 
-serverSystem.displayChat = function displayChat(message = " ") {
+myServerSystem.displayChat = function displayChat(message = " ") {
     const eventData = this.createEventData("minecraft:display_chat_event");
     if (eventData) {
         eventData.data.message = `[WorldEdit] ${message}`;
@@ -64,100 +67,56 @@ serverSystem.displayChat = function displayChat(message = " ") {
     }
 };
 
-serverSystem.addLog = function addLog(message = " ") {
+myServerSystem.addLog = function addLog(message = " ") {
     this.log(`[WorldEdit] ${message}`);
 };
 
-// SELECT
-
-serverSystem.entitySelect = function entitySelect(entity) {
-    const position = this.getComponent(entity, "minecraft:position").data;
-
-    this.select(position);
-
-    this.destroyEntity(entity);
-};
-
-serverSystem.axeSelect = function axeSelect(position) {
-    this.select(position);
-};
-
-serverSystem.select = function select(position) {
-    this.displayChat(`Selecting position [${position.x}, ${position.y}, ${position.z}]`);
-    positionArray.push(position);
-    if (positionArray.length >= 3) {
-        this.displayChat("Warning: Positions exceeded. The first position is ignored.");
-        positionArray.shift();
-    }
-};
-
-// EXECUTE
-
-serverSystem.entityExecute = function entityExecute(entity) {
-    this.execute();
-
-    this.destroyEntity(entity);
-};
-
-serverSystem.playerExecute = function playerExecute() {
-    this.execute();
-};
-
-serverSystem.execute = function execute() {
-    //displayChat(`/fill ${positionArray[0].x} ${positionArray[0].y} ${positionArray[0].z} ${positionArray[1].x} ${positionArray[1].y} ${positionArray[1].z} ${globalVars.fillingBlock.block.__identifier__.slice("minecraft:".length)}`);
-    //serverSystem.executeCommand(`/fill ${positionArray[0].x} ${positionArray[0].y} ${positionArray[0].z} ${positionArray[1].x} ${positionArray[1].y} ${positionArray[1].z} ${globalVars.fillingBlock.block.__identifier__.slice("minecraft:".length)}`, (commandResultData) => { ; });
-    const minPosition = {
-        x: Math.min(positionArray[0].x, positionArray[1].x),
-        y: Math.min(positionArray[0].y, positionArray[1].y),
-        z: Math.min(positionArray[0].z, positionArray[1].z),
-    };
-    const maxPosition = {
-        x: Math.max(positionArray[0].x, positionArray[1].x),
-        y: Math.max(positionArray[0].y, positionArray[1].y),
-        z: Math.max(positionArray[0].z, positionArray[1].z),
-    };
-
-    this.displayChat(
-        `Filling [${minPosition.x}, ${minPosition.y}, ${minPosition.z}] to [${maxPosition.x}, ${maxPosition.y}, ${
-            maxPosition.z
-        }] (${(maxPosition.x - minPosition.x) *
-            (maxPosition.y - minPosition.y) *
-            (maxPosition.z -
-                minPosition.z)} blocks), with a block  type of ${globalVars.fillingBlock.block.__identifier__.slice(
-            "minecraft:".length,
-        )}.`,
-    );
-
-    /*displayChat(minPosition.x);
-    displayChat(minPosition.y);
-    displayChat(minPosition.z);
-    displayChat(maxPosition.x);
-    displayChat(maxPosition.y);
-    displayChat(maxPosition.z);*/
-
-    for (let x = minPosition.x; x <= maxPosition.x; x++) {
-        for (let y = minPosition.y; y <= maxPosition.y; y++) {
-            for (let z = minPosition.z; z <= maxPosition.z; z++) {
-                /*displayChat("Position:");
-                displayChat(x);
-                displayChat(y);
-                displayChat(z);*/
-                this.generateBlock({ x, y, z }, globalVars.fillingBlock.block, globalVars.fillingBlock.blockState);
-            }
-        }
-    }
-};
-
 // TOGGLE
-
-serverSystem.toggle = function toggle() {
+myServerSystem.toggle = function toggle() {
     if (globalVars.enabled === true) globalVars.enabled = false;
     else globalVars.enabled = true;
 };
 
-// GENERATEBLOCK
+// SET FILLING BLOCK
+myServerSystem.setFillingBlock = function setFillingBlock(block, blockState) {
+    globalVars.fillingBlock.block = block;
+    globalVars.fillingBlock.blockState = blockState;
+};
 
-serverSystem.generateBlock = function generateBlock(
+// GET FILLING BLOCK
+myServerSystem.getFillingBlock = function getFillingBlock() {
+    return { block: globalVars.fillingBlock.block, blockState: globalVars.fillingBlock.blockState };
+};
+
+// SET BREAKING BLOCK
+myServerSystem.setBreakingBlock = function setBreakingBlock(block, blockState) {
+    globalVars.breakingBlock.block = block;
+    globalVars.breakingBlock.blockState = blockState;
+};
+
+// GET BREAKING BLOCK
+myServerSystem.getBreakingBlock = function getBreakingBlock() {
+    return { block: globalVars.breakingBlock.block, blockState: globalVars.breakingBlock.blockState };
+};
+
+// UTILITIES
+myServerSystem.getHand = function getHand(player) {
+    const handObject = this.getComponent(player, "minecraft:hand_container").data;
+    const mainHand = handObject[0];
+    const offHand = handObject[1];
+    globalVars.playerHand.mainHand = mainHand;
+    globalVars.playerHand.offHand = offHand;
+    return { mainHand, offHand, handObject };
+};
+
+myServerSystem.getTickingArea = function getTickingArea(player) {
+    const tickingArea = this.getComponent(player, "minecraft:tick_world").data.tickingArea;
+    globalVars.tickingArea = tickingArea;
+    return tickingArea;
+};
+
+// GENERATEBLOCK
+myServerSystem.generateBlock = function generateBlock(
     position = { x: 0, y: 0, z: 0 },
     block = null,
     blockState = null,
@@ -172,11 +131,11 @@ serverSystem.generateBlock = function generateBlock(
             `/setblock ${position.x} ${position.y} ${position.z} ${block.__identifier__.slice("minecraft:".length)}`,
             (commandResultData) => {
                 if (blockState) {
-                    /*displayChat(JSON.stringify(commandResultData, null, "\t"));
-            displayChat("Position now:");
-            displayChat(x);
-            displayChat(y);
-            displayChat(z);*/
+                    //displayChat(JSON.stringify(commandResultData, null, "\t"));
+                    //displayChat("Position now:");
+                    //displayChat(x);
+                    //displayChat(y);
+                    //displayChat(z);
 
                     const targetBlock = this.getBlock(tickingArea, position.x, position.y, position.z);
 
@@ -195,9 +154,94 @@ serverSystem.generateBlock = function generateBlock(
     }
 };
 
-// BLOCK HANDLERS
+//=====================================================================================================================
+//=====================================================================================================================
+//=====================================================================================================================
 
-serverSystem.destroyBlockStartHandler = function destroyBlockStartHandler(data) {
+// SELECT
+myServerSystem.select = function select(position) {
+    this.displayChat(`Selecting position [${position.x}, ${position.y}, ${position.z}]`);
+    globalVars.positionArray.push(position);
+    if (globalVars.positionArray.length >= 3) {
+        this.displayChat("Warning: Positions exceeded. The first position is ignored.");
+        globalVars.positionArray.shift();
+    }
+};
+
+myServerSystem.entitySelect = function entitySelect(entity) {
+    const position = this.getComponent(entity, "minecraft:position").data;
+
+    this.select(position);
+
+    this.destroyEntity(entity);
+};
+
+myServerSystem.axeSelect = function axeSelect(position) {
+    this.select(position);
+};
+
+// EXECUTE
+myServerSystem.execute = function execute() {
+    //displayChat(`/fill ${globalVars.positionArray[0].x} ${globalVars.positionArray[0].y} ${globalVars.positionArray[0].z} ${globalVars.positionArray[1].x} ${globalVars.positionArray[1].y} ${globalVars.positionArray[1].z} ${globalVars.fillingBlock.block.__identifier__.slice("minecraft:".length)}`);
+    //myServerSystem.executeCommand(`/fill ${globalVars.positionArray[0].x} ${globalVars.positionArray[0].y} ${globalVars.positionArray[0].z} ${globalVars.positionArray[1].x} ${globalVars.positionArray[1].y} ${globalVars.positionArray[1].z} ${globalVars.fillingBlock.block.__identifier__.slice("minecraft:".length)}`, (commandResultData) => { ; });
+    const pos1 = globalVars.positionArray[0];
+    const pos2 = globalVars.positionArray[1];
+
+    const { block, blockState } = this.getFillingBlock();
+
+    const minPosition = {
+        y: Math.min(pos1.y, pos2.y),
+        x: Math.min(pos1.x, pos2.x),
+        z: Math.min(pos1.z, pos2.z),
+    };
+    const maxPosition = {
+        x: Math.max(pos1.x, pos2.x),
+        y: Math.max(pos1.y, pos2.y),
+        z: Math.max(pos1.z, pos2.z),
+    };
+
+    this.displayChat(
+        `Filling [${minPosition.x}, ${minPosition.y}, ${minPosition.z}] to [${maxPosition.x}, ${maxPosition.y}, ${
+            maxPosition.z
+        }] (${(maxPosition.x - minPosition.x) *
+            (maxPosition.y - minPosition.y) *
+            (maxPosition.z - minPosition.z)} blocks), with a block type of ${block.__identifier__.slice(
+            "minecraft:".length,
+        )}.`,
+    );
+
+    /*displayChat(minPosition.x);
+    displayChat(minPosition.y);
+    displayChat(minPosition.z);
+    displayChat(maxPosition.x);
+    displayChat(maxPosition.y);
+    displayChat(maxPosition.z);*/
+
+    for (let x = minPosition.x; x <= maxPosition.x; x++) {
+        for (let y = minPosition.y; y <= maxPosition.y; y++) {
+            for (let z = minPosition.z; z <= maxPosition.z; z++) {
+                /*displayChat("Position:");
+                displayChat(x);
+                displayChat(y);
+                displayChat(z);*/
+                this.generateBlock({ x, y, z }, block, blockState);
+            }
+        }
+    }
+};
+
+myServerSystem.entityExecute = function entityExecute(entity) {
+    this.execute();
+
+    this.destroyEntity(entity);
+};
+
+myServerSystem.playerExecute = function playerExecute() {
+    this.execute();
+};
+
+// BLOCK HANDLERS
+myServerSystem.destroyBlockStartHandler = function destroyBlockStartHandler(data) {
     // Check if being broken by wooden axe
     if (this.getHand(data.player).mainHand.item === "minecraft:wooden_axe") {
         const blockPostion = data.block_position;
@@ -206,18 +250,16 @@ serverSystem.destroyBlockStartHandler = function destroyBlockStartHandler(data) 
 
         this.executeCommand("/gamerule doTileDrops false", (commandResultData) => {});
 
-        globalVars.breakingBlock.block = block;
-        globalVars.breakingBlock.blockState = blockState;
+        this.setBreakingBlock(block, blockState);
     }
 };
 
-serverSystem.destroyBlockEndHandler = function destroyBlockEndHandler(data) {
+myServerSystem.destroyBlockEndHandler = function destroyBlockEndHandler(data) {
     // Improve performance?
     if (data.destruction_progress >= 1) {
         // Check if being broken by wooden axe
         if (this.getHand(data.player).mainHand.item === "minecraft:wooden_axe") {
-            const block = globalVars.breakingBlock.block;
-            const blockState = globalVars.breakingBlock.blockState;
+            const { block, blockState } = this.getFillingBlock();
 
             this.generateBlock(block.block_position, block, blockState);
 
@@ -229,8 +271,7 @@ serverSystem.destroyBlockEndHandler = function destroyBlockEndHandler(data) {
 };
 
 // HAND ITEM CHANGED HANDLERS
-
-serverSystem.handItemChangedHandler = function handItemChangedHandler(data) {
+myServerSystem.handItemChangedHandler = function handItemChangedHandler(data) {
     if (data.entity.__identifier__ === "minecraft:player") {
         const hand = this.getHand(data.entity);
         if (hand.offHand.__identifier__ === "minecraft:totem") this.handTotemHandler(data, hand);
@@ -238,23 +279,6 @@ serverSystem.handItemChangedHandler = function handItemChangedHandler(data) {
     }
 };
 
-serverSystem.handTotemHandler = function handTotemHandler(data, hand) {};
+myServerSystem.handTotemHandler = function handTotemHandler(data, hand) {};
 
-serverSystem.handShieldHandler = function handShieldHandler(data, hand) {};
-
-// UTILITIES
-
-serverSystem.getHand = function getHand(player) {
-    const handObject = this.getComponent(player, "minecraft:hand_container").data;
-    const mainHand = handObject[0];
-    const offHand = handObject[1];
-    globalVars.playerHand.mainHand = mainHand;
-    globalVars.playerHand.offHand = offHand;
-    return { mainHand, offHand, handObject };
-};
-
-serverSystem.getTickingArea = function getTickingArea(player) {
-    const tickingArea = this.getComponent(player, "minecraft:tick_world").data.tickingArea;
-    globalVars.tickingArea = tickingArea;
-    return tickingArea;
-};
+myServerSystem.handShieldHandler = function handShieldHandler(data, hand) {};

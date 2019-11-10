@@ -14,6 +14,8 @@
         "no-console": "off",
         "no-unused-vars": "off",
         "no-redeclare": "off",
+        "no-label-var": "warn",
+        "eslint-comments/no-unlimited-disable": "off",
         "arrow-body-style": 0,
         "curly": 0,
         "lines-around-comment": 0,

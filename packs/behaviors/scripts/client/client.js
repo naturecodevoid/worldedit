@@ -1,5 +1,6 @@
-const clientSystem = client.registerSystem(0, 0);
+// eslint-disable-next-line
+let myClientSystem = client.registerSystem(0, 0);
 
-clientSystem.initialize = function() {};
+myClientSystem.initialize = function() {};
 
-clientSystem.update = function() {};
+myClientSystem.update = function() {};
